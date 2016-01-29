@@ -1,0 +1,65 @@
+web:
+  build: .
+  command: bundle exec foreman start web
+  environment:
+    - RAILS_ENV=development
+    - RACK_ENV=development
+    - PG_HOST=postgres
+    - PG_USERNAME=postgres
+    - ELASTICSEARCH_URL=elasticsearch:9200
+    - BUNDLE_PATH=/bundle
+    - PORT=3000
+    - TCP_PORTS=3000
+  volumes:
+    - .:/app
+  volumes_from:
+    - bundle
+  links:
+    - postgres
+    - elasticsearch
+  ports:
+    - "3000"
+
+test:
+  build: .
+  dockerfile: Dockerfile-test
+  command: bundle exec rake test
+  environment:
+    - RAILS_ENV=test
+    - RACK_ENV=test
+    - PG_HOST=postgres
+    - PG_USERNAME=postgres
+    - ELASTICSEARCH_URL=elasticsearch:9200
+    - BUNDLE_PATH=/bundle
+  volumes_from:
+    - web
+  links:
+    - postgres
+    - elasticsearch
+
+bundle:
+  image: busybox
+  volumes:
+    - /bundle
+
+elasticsearch:
+  build: .
+  dockerfile: Dockerfile-elasticsearch
+  ports:
+    - "9200"
+    - "9300"
+
+postgres:
+  image: postgres:9.5
+  ports:
+    - "5432"
+
+haproxy:
+  image: tutum/haproxy:0.2
+  environment:
+    - MODE=tcp
+  links:
+    - web
+  ports:
+    - "8080:3000"
+    - "1936:1936"

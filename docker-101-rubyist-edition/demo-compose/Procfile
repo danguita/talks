@@ -1,0 +1,2 @@
+web: rm -f /tmp/web.pid && bundle exec rails server -p $PORT -b "0.0.0.0" -P /tmp/web.pid
+sidekiq: bundle exec sidekiq -C config/sidekiq.yml

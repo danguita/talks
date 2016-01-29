@@ -1,0 +1,17 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  timeout: 5000
+  template: template1
+  username: <%= ENV["PG_USERNAME"] %>
+  password: <%= ENV["PG_PASSWORD"] %>
+  host: <%= ENV["PG_HOST"] %>
+
+development:
+  <<: *default
+  database: secrets_development
+
+test:
+  <<: *default
+  database: secrets_test

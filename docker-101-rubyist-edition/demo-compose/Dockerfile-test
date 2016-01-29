@@ -1,0 +1,9 @@
+FROM democompose_web
+MAINTAINER David Anguita <david@davidanguita.name>
+
+ENV PHANTOMJS_VERSION=1.9.8 PHANTOMJS_ARCH=x86_64 PHANTOMJS_EXTENSION=tar.bz2
+ENV PHANTOMJS_FILE_NAME=phantomjs-$PHANTOMJS_VERSION-linux-$PHANTOMJS_ARCH.$PHANTOMJS_EXTENSION
+
+RUN wget -O /opt/$PHANTOMJS_FILE_NAME https://bitbucket.org/ariya/phantomjs/downloads/$PHANTOMJS_FILE_NAME
+RUN tar xjf /opt/$PHANTOMJS_FILE_NAME
+RUN ln -s /opt/$PHANTOMJS_FILE_NAME/bin/phantomjs /usr/bin/phantomjs
