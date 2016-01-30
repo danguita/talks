@@ -4,22 +4,16 @@
 
 ```shell
 $ docker-compose run web bundle
-$ docker-compose run web bundle exec rake db:create db:setup db:test:prepare
+$ docker-compose run web bundle exec rake db:setup db:test:prepare
 $ docker-compose up -d
 ```
 
 ## Demo steps
 
-### Docker containers and port redirection
+### Docker processes and port redirection
 
 ```shell
 $ docker-compose ps
-```
-
-### Shared bundle volume
-
-```shell
-$ docker-compose run web bundle
 ```
 
 ### Rails console
@@ -28,13 +22,13 @@ $ docker-compose run web bundle
 $ docker-compose run web bundle exec rails c
 ```
 
-### Test container command
+### Test container with default command
 
 ```shell
 $ docker-compose run test
 ```
 
-### List linked hosts
+### List linked hostnames
 
 ```shell
 $ docker-compose run web bash
@@ -45,10 +39,10 @@ $ docker-compose run web bash
 ### Scale web front-ends
 
 ```shell
-$ docker-compose scale web=2
-$ docker-compose up -d --force-recreate
-$ docker-compose logs web
-$ open http://docker_host:1936
-$ curl docker_host:8080/secrets.json
+$ docker-compose scale web=3
+$ docker-compose up -d --force-recreate # Recreate haproxy container to discover new nodes
+$ curl docker_host:8080/secrets.json # Perform a HTTP request
+$ docker-compose logs web # Watch the HTTP requests being delivered through the Load Balancer
+$ open http://docker_host:1936 # HAProxy Stats
 ```
 

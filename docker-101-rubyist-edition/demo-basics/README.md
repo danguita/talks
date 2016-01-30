@@ -17,6 +17,6 @@ $ docker run --rm -p 4567:4567 demo/sinatra
 ### Service request
 
 ```shell
-curl docker_host:4567
+$ curl docker_host:4567
 ```
 
